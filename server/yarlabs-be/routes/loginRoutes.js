@@ -4,7 +4,7 @@ const { ethers } = require('ethers');
 
 const asyncHandler = require('../utils/asyncHandler');
 const Student = require('../models/Member');
-const Teacher = require('../models/Teacher');
+const Teacher = require('../models/Admin');
 
 Router.post('/login', asyncHandler(async (req, res) => {
     let { walletAddress } = req.body;

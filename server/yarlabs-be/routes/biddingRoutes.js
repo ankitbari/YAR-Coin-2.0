@@ -1,7 +1,7 @@
 const express = require('express');
 const Router = express.Router();
 const Student = require('../models/Member');
-const Teacher = require('../models/Teacher');
+const Teacher = require('../models/Admin');
 const Bidding = require('../models/Bidding');
 
 Router.get('/student/:studentId', async (req, res) => {

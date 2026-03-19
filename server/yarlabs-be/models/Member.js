@@ -8,7 +8,7 @@ const memberSchema = new mongoose.Schema({
     achievements: { type: [String], default: [] },
     basePrice: { type: Number, default: 0 },
     yarBalance: { type: Number, default: 0 },
-    ownedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'Teacher', default: null },
+    ownedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'Admin', default: null },
     createdAt: { type: Date, default: Date.now },
 });
 

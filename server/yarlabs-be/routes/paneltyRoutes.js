@@ -1,6 +1,6 @@
 const express = require('express');
 const Student = require('../models/Member');
-const Teacher = require('../models/Teacher');
+const Teacher = require('../models/Admin');
 const Panelty = require('../models/Panelty');
 const { ethers, ContractTransactionReceipt } = require('ethers');
 const Router = express.Router();

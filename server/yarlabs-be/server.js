@@ -12,10 +12,10 @@ const { ethers } = require('ethers');
 const connectDB = require('./utils/connectDB');
 const chatSocket = require('./sockets/chatSocket');
 const login = require('./routes/loginRoutes');
-const members = require('./routes/studentRoutes');
+const members = require('./routes/memberRoutes');
 const Student = require('./models/Member');
-const teacherRoutes = require('./routes/teacherRoutes');
-const Teacher = require('./models/Teacher');
+const admins = require('./routes/adminRoutes');
+const Teacher = require('./models/Admin');
 const biddingRoutes = require('./routes/biddingRoutes');
 const Bidding = require('./models/Bidding')
 const dexRoutes = require('./routes/dexRoutes');
@@ -37,7 +37,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/v1/auth', login);
 app.use('/api/v1/members', members);
-app.use('/api/teachers', teacherRoutes);
+app.use('/api/v1/admins', admins);
 app.use('/api/biddings', biddingRoutes);
 app.use('/stat', statRoutes);
 app.use('/apply', paneltyRoutes);
