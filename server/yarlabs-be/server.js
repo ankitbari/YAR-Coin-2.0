@@ -16,7 +16,7 @@ const members = require('./routes/memberRoutes');
 const Student = require('./models/Member');
 const admins = require('./routes/adminRoutes');
 const Teacher = require('./models/Admin');
-const biddingRoutes = require('./routes/biddingRoutes');
+const bids = require('./routes/biddingRoutes');
 const Bidding = require('./models/Bidding')
 const dexRoutes = require('./routes/dexRoutes');
 const statRoutes = require('./routes/statRoutes');
@@ -38,7 +38,7 @@ app.get('/', (req, res) => {
 app.use('/api/v1/auth', login);
 app.use('/api/v1/members', members);
 app.use('/api/v1/admins', admins);
-app.use('/api/biddings', biddingRoutes);
+app.use('/api/v1/bids', bids);
 app.use('/stat', statRoutes);
 app.use('/apply', paneltyRoutes);
 app.use('/mint', nftRoutes);
