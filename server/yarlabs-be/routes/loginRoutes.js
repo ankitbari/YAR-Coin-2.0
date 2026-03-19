@@ -1,8 +1,8 @@
 const express = require('express');
 const Router = express.Router();
-const asyncHandler = require('express-async-handler');
 const { ethers } = require('ethers');
 
+const asyncHandler = require('../utils/asyncHandler');
 const Student = require('../models/Student');
 const Teacher = require('../models/Teacher');
 
@@ -23,7 +23,7 @@ Router.post('/login', asyncHandler(async (req, res) => {
     if (!user) {
         return res.status(404).json({ success: false, message: 'Invalid credentials...!', error: "USER_NOT_FOUND" });
     }
-    return res.status(200).json({ success: true, message: "Login successful...!", data: {role: student ? `student` : `teacher`, user} });
+    return res.status(200).json({ success: true, message: "Login successful...!", data: { role: student ? `student` : `teacher`, user } });
 }));
 
 module.exports = Router;

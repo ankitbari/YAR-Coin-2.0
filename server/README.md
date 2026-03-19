@@ -2,7 +2,7 @@
 
 - Login API
 ```bash
-POST   https://yarcoin.vercel.app/login
+POST   https://yarcoin.vercel.app/api/v1/auth/login
 ```
 
 - Socket Chat Tunnel
