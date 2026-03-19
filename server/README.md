@@ -28,8 +28,8 @@ GET    https://yarcoin.vercel.app/mint/nft/:walletAddress
 
 - Members API's
 ```bash
-POST   https://yarcoin.vercel.app/api/students
-GET    https://yarcoin.vercel.app/api/students
+GET    https://yarcoin.vercel.app/api/v1/members
+POST   https://yarcoin.vercel.app/api/v1/members
 POST   https://yarcoin.vercel.app/convert
 GET    https://yarcoin.vercel.app/transactions/:walletAddress
 ```
