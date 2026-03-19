@@ -2,7 +2,7 @@ const express = require('express');
 const Router = express.Router();
 const { ethers } = require('ethers');
 const DEX = require('../models/DEX');
-const Student = require('../models/Student');
+const Student = require('../models/Member');
 
 Router.get('/transactions/:walletAddress', async (req, res) => {
     try {

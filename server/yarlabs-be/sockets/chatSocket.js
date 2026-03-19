@@ -1,4 +1,4 @@
-const Student = require('../models/Student');
+const Student = require('../models/Member');
 const Message = require('../models/Message');
 
 const userCache = new Map();

@@ -1,5 +1,5 @@
 const express = require('express');
-const Student = require('../models/Student');
+const Student = require('../models/Member');
 const Teacher = require('../models/Teacher');
 const Panelty = require('../models/Panelty');
 const { ethers, ContractTransactionReceipt } = require('ethers');

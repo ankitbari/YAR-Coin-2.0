@@ -1,6 +1,6 @@
 const express = require('express');
 const Router = express.Router();
-const Student = require('../models/Student');
+const Student = require('../models/Member');
 const Teacher = require('../models/Teacher');
 const Bidding = require('../models/Bidding');
 

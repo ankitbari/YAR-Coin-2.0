@@ -2,7 +2,7 @@ const express = require('express');
 const Router = express.Router();
 const { ethers } = require('ethers');
 const NFT = require('../models/NFT');
-const Student = require('../models/Student');
+const Student = require('../models/Member');
 const Teacher = require('../models/Teacher');
 
 Router.get('/nft/:walletAddress', async (req, res) => {

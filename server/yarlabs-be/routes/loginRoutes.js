@@ -3,7 +3,7 @@ const Router = express.Router();
 const { ethers } = require('ethers');
 
 const asyncHandler = require('../utils/asyncHandler');
-const Student = require('../models/Student');
+const Student = require('../models/Member');
 const Teacher = require('../models/Teacher');
 
 Router.post('/login', asyncHandler(async (req, res) => {
