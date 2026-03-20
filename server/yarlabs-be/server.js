@@ -20,7 +20,7 @@ const bids = require('./routes/biddingRoutes');
 const Bidding = require('./models/Bidding')
 const dexRoutes = require('./routes/dexRoutes');
 const stats = require('./routes/statRoutes');
-const paneltyRoutes = require('./routes/paneltyRoutes');
+const panelties = require('./routes/paneltyRoutes');
 const nftRoutes = require('./routes/nftRoutes');
 
 const app = express();
@@ -40,7 +40,7 @@ app.use('/api/v1/members', members);
 app.use('/api/v1/admins', admins);
 app.use('/api/v1/bids', bids);
 app.use('/api/v1/stats', stats);
-app.use('/api/v1/apply', paneltyRoutes);
+app.use('/api/v1/apply', panelties);
 app.use('/mint', nftRoutes);
 app.use('/dex', dexRoutes);
 

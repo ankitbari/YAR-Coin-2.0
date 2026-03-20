@@ -20,8 +20,8 @@ wss://yarcoin.vercel.app
 GET    https://yarcoin.vercel.app/api/v1/admins
 POST   https://yarcoin.vercel.app/api/v1/admins
 GET    https://yarcoin.vercel.app/api/v1/stats/repo/:owner/:repo
-POST   https://yarcoin.vercel.app/apply/panelty
-GET    https://yarcoin.vercel.app/apply/panelty/:walletAddress
+GET    https://yarcoin.vercel.app/api/v1/apply/panelty/:walletAddress
+POST   https://yarcoin.vercel.app/api/v1/apply/panelty
 POST   https://yarcoin.vercel.app/mint/nft
 GET    https://yarcoin.vercel.app/mint/nft/:walletAddress
 ```

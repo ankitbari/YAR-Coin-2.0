@@ -1,8 +1,8 @@
 const { default: mongoose } = require("mongoose");
 
 const PaneltySchema = new mongoose.Schema({
-    student: { type: mongoose.Schema.Types.ObjectId, ref: 'Member', default: null },
-    teacher: { type: mongoose.Schema.Types.ObjectId, ref: 'Admin', default: null },
+    member: { type: mongoose.Schema.Types.ObjectId, ref: 'Member', default: null },
+    admin: { type: mongoose.Schema.Types.ObjectId, ref: 'Admin', default: null },
     description: { type: String, default: "" },
     amount: { type: Number, required: true },
 }, { timestamps: true });
