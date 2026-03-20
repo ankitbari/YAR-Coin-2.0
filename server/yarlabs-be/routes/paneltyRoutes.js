@@ -66,8 +66,8 @@ Router.post("/panelty", asyncHandler(async (req, res) => {
         return res.status(400).json({ success: false, message: "No sufficient YAR's on member's balance...!", error: "INSUFFICIENT_BALANCE" })
     }
     try {
-    const tx = await contract.transferFrom(member.walletAddress, admin.walletAddress, parseAmount);
-    await tx.wait();
+        const tx = await contract.transferFrom(member.walletAddress, admin.walletAddress, parseAmount);
+        await tx.wait();
     } catch (err) {
         return res.status(500).json({ success: false, message: "Blockchain transaction failed...!", error: "TRANSACTION_FAILED", error: err.message });
     }
@@ -86,7 +86,7 @@ Router.post("/panelty", asyncHandler(async (req, res) => {
     } catch (err) {
         await session.abortTransaction();
         session.endSession();
-        throw err;
+        res.status(500).json({ success: false, message: "Failed to apply penalty...!", error: "PENALTY_APPLICATION_FAILED" });
     }
 }));
 

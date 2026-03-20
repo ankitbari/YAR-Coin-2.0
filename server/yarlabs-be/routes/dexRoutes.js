@@ -1,5 +1,6 @@
 const express = require('express');
 const Router = express.Router();
+const mongoose = require('mongoose');
 const { ethers } = require('ethers');
 
 const asyncHandler = require('../utils/asyncHandler');
@@ -7,7 +8,6 @@ const DEX = require('../models/DEX');
 const Student = require('../models/Member');
 
 const provider = new ethers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL);
-
 
 Router.get('/transactions/:walletAddress', asyncHandler(async (req, res) => {
     let { walletAddress } = req.params;
@@ -27,15 +27,28 @@ Router.post('/convert', asyncHandler(async (req, res) => {
     if (!walletAddress || !yarAmount || !txHash) {
         return res.status(400).json({ success: false, message: "Missing details...!", error: "MISSING_DETAILS" });
     }
+    walletAddress = walletAddress.toLowerCase();
+    if (!ethers.isAddress(walletAddress)) {
+        return res.status(400).json({ success: false, message: "Invalid wallet address...!", error: "INVALID_WALLET_ADDRESS" });
+    }
     const amount = Number(yarAmount);
     if (isNaN(amount) || amount <= 0) {
         return res.status(400).json({ success: false, message: "Invalid YAR amount...!", error: "INVALID_YAR_AMOUNT" });
     }
+    const existingTx = await DEX.findOne({ txHash: txHash });
+    if (existingTx) {
+        return res.status(409).json({ success: false, message: "Transaction already processed...!", error: "DUPLICATE_TRANSACTION" });
+    }
     const student = await Student.findOne({ walletAddress });
     if (!student) {
-        return res.status(400).json({ success: false, message: "Member not found...!", error: "MEMBER_NOT_FOUND" });
+        return res.status(404).json({ success: false, message: "Member not found...!", error: "MEMBER_NOT_FOUND" });
     }
-    const receipt = await provider.getTransactionReceipt(txHash);
+    let receipt;
+    try {
+        receipt = await provider.getTransactionReceipt(txHash);
+    } catch (err) {
+        return res.status(400).json({ success: false, message: "Error fetching transaction receipt...!", error: "TRANSACTION_RECEIPT_ERROR" });
+    }
     if (!receipt || receipt.status !== 1) {
         return res.status(400).json({ success: false, message: "Blockchain transaction failed...!", error: "BLOCKCHAIN_TRANSACTION_FAILED" });
     }
@@ -66,21 +79,31 @@ Router.post('/convert', asyncHandler(async (req, res) => {
         return res.status(400).json({ success: false, message: "Insufficient YAR balance...!", error: "INSUFFICIENT_YAR_BALANCE" });
     }
     const usdValue = amount * 0.5;
-    student.yarBalance -= amount;
-    await student.save();
-    const total = await DEX.aggregate([
-        { $match: { walletAddress } },
-        {
-            $group: {
-                _id: null,
-                totalUsd: { $sum: "$usdBalance" }
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    try {
+        student.yarBalance -= amount;
+        await student.save({ session });
+        const total = await DEX.aggregate([
+            { $match: { walletAddress } },
+            {
+                $group: {
+                    _id: null,
+                    totalUsd: { $sum: "$usdBalance" }
+                }
             }
-        }
-    ]);
-    const previousTotal = total.length > 0 ? total[0].totalUsd : 0;
-    const newTotalUsd = previousTotal + usdValue;
-    await DEX.create({ walletAddress, fromYar: amount, usdBalance: usdValue, totalUsd: newTotalUsd, txHash: txHash });
-    res.json({ success: true, message: "YAR to USD converted successfully...!", convertedUsd: usdValue, totalUsd: newTotalUsd, txHash: txHash });
+        ]).session(session);
+        const previousTotal = total.length > 0 ? total[0].totalUsd : 0;
+        const newTotalUsd = previousTotal + usdValue;
+        await DEX.create([{ walletAddress, fromYar: amount, usdBalance: usdValue, totalUsd: newTotalUsd, txHash: txHash }], { session });
+        await session.commitTransaction();
+        session.endSession();
+        res.status(201).json({ success: true, message: "YAR to USD converted successfully...!", convertedUsd: usdValue, totalUsd: newTotalUsd, txHash: txHash });
+    } catch (err) {
+        await session.abortTransaction();
+        session.endSession();
+        res.status(500).json({ success: false, message: "Conversion failed...!", error: "CONVERSION_FAILED" });
+    }
 }));
 
 module.exports = Router;

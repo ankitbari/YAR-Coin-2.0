@@ -18,7 +18,7 @@ const admins = require('./routes/adminRoutes');
 const Teacher = require('./models/Admin');
 const bids = require('./routes/biddingRoutes');
 const Bidding = require('./models/Bidding')
-const dexRoutes = require('./routes/dexRoutes');
+const dexs = require('./routes/dexRoutes');
 const stats = require('./routes/statRoutes');
 const panelties = require('./routes/paneltyRoutes');
 const nfts = require('./routes/nftRoutes');
@@ -42,7 +42,7 @@ app.use('/api/v1/bids', bids);
 app.use('/api/v1/stats', stats);
 app.use('/api/v1/apply', panelties);
 app.use('/api/v1/mint', nfts);
-app.use('/dex', dexRoutes);
+app.use('/api/v1/dex', dexs);
 
 app.use((req, res) => {
     res.status(404).json({ success: false, message: "Route invalid...!", error: "INVALID_ROUTE" });

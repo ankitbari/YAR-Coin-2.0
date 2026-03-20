@@ -30,8 +30,8 @@ POST   https://yarcoin.vercel.app/api/v1/mint/nft
 ```bash
 GET    https://yarcoin.vercel.app/api/v1/members
 POST   https://yarcoin.vercel.app/api/v1/members
-POST   https://yarcoin.vercel.app/convert
-GET    https://yarcoin.vercel.app/transactions/:walletAddress
+GET    https://yarcoin.vercel.app/api/v1/dex/transactions/:walletAddress
+POST   https://yarcoin.vercel.app/api/v1/dex/convert
 ```
 
 - Bidding API's
