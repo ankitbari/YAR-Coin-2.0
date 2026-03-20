@@ -2,12 +2,13 @@ const express = require('express');
 const Router = express.Router();
 const { ethers } = require('ethers');
 
+const { SEPOLIA_RPC_URL, ADMIN_PRIVATE_KEY, YAR_CONTRACT_ADDRESS, ADMIN_REWARD_RATE } = require('../utils/env');
 const asyncHandler = require('../utils/asyncHandler');
 const Admin = require('../models/Admin');
 
-const provider = new ethers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL);
-const wallet = new ethers.Wallet(process.env.ADMIN_PRIVATE_KEY, provider);
-const contractAddress = process.env.YAR_CONTRACT_ADDRESS;
+const provider = new ethers.JsonRpcProvider(SEPOLIA_RPC_URL);
+const wallet = new ethers.Wallet(ADMIN_PRIVATE_KEY, provider);
+const contractAddress = YAR_CONTRACT_ADDRESS;
 const abi = ["function transfer(address to, uint256 value) public returns (bool)",
     "function balanceOf(address owner) view returns (uint256)"];
 const contract = new ethers.Contract(contractAddress, abi, wallet);
@@ -30,7 +31,7 @@ Router.post('/', asyncHandler(async (req, res) => {
     if (existing) {
         return res.status(400).json({ success: false, message: "Wallet address or email already registered...!", error: "WALLET_OR_EMAIL_ALREADY_REGISTERED" });
     }
-    const amount = ethers.parseUnits("100", 18);
+    const amount = ethers.parseUnits(ADMIN_REWARD_RATE.toString(), 18);
     let tx, YARBalance = 0;
     try {
         tx = await contract.transfer(walletAddress, amount);

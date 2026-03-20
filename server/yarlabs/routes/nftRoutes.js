@@ -2,16 +2,17 @@ const express = require('express');
 const Router = express.Router();
 const { ethers } = require('ethers');
 
+const { SEPOLIA_RPC_URL, ADMIN_PRIVATE_KEY, NFT_CONTRACT_ADDRESS } = require('../utils/env');
 const asyncHandler = require('../utils/asyncHandler');
 const NFT = require('../models/NFT');
 const Member = require('../models/Member');
 const Admin = require('../models/Admin');
 
-const provider = new ethers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL);
-const wallet = new ethers.Wallet(process.env.ADMIN_PRIVATE_KEY, provider);
+const provider = new ethers.JsonRpcProvider(SEPOLIA_RPC_URL);
+const wallet = new ethers.Wallet(ADMIN_PRIVATE_KEY, provider);
 const abi = ["function mint(address student) public",
     "function nextTokenId() view returns (uint256)"];
-const contract = new ethers.Contract(process.env.NFT_CONTRACT_ADDRESS, abi, wallet);
+const contract = new ethers.Contract(NFT_CONTRACT_ADDRESS, abi, wallet);
 
 Router.get('/nft/:walletAddress', asyncHandler(async (req, res) => {
     let { walletAddress } = req.params;

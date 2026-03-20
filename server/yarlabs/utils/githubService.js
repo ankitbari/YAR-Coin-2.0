@@ -1,9 +1,11 @@
+const {GITHUB_TOKEN} = require('./env');
+
 async function getRepoContributors(owner, repo) {
   const response = await fetch(
     `https://api.github.com/repos/${owner}/${repo}/contributors`,
     {
       headers: {
-        Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+        Authorization: `Bearer ${GITHUB_TOKEN}`,
         "Content-Type": "application/json"
       }
     }

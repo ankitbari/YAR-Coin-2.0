@@ -3,11 +3,12 @@ const Router = express.Router();
 const mongoose = require('mongoose');
 const { ethers } = require('ethers');
 
+const { SEPOLIA_RPC_URL, DEX_CONTRACT_ADDRESS, YAR_RATE } = require('../utils/env');
 const asyncHandler = require('../utils/asyncHandler');
 const DEX = require('../models/DEX');
 const Member = require('../models/Member');
 
-const provider = new ethers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL);
+const provider = new ethers.JsonRpcProvider(SEPOLIA_RPC_URL);
 
 Router.get('/transactions/:walletAddress', asyncHandler(async (req, res) => {
     let { walletAddress } = req.params;
@@ -52,7 +53,7 @@ Router.post('/convert', asyncHandler(async (req, res) => {
     if (!receipt || receipt.status !== 1) {
         return res.status(400).json({ success: false, message: "Blockchain transaction failed...!", error: "BLOCKCHAIN_TRANSACTION_FAILED" });
     }
-    if (receipt.to.toLowerCase() !== process.env.DEX_CONTRACT_ADDRESS.toLowerCase()) {
+    if (receipt.to.toLowerCase() !== DEX_CONTRACT_ADDRESS.toLowerCase()) {
         return res.status(400).json({ success: false, message: "Invalid transaction intersection...!", error: "INVALID_TRANSACTION_INTERSECTION" });
     }
     const iface = new ethers.Interface([
@@ -78,7 +79,8 @@ Router.post('/convert', asyncHandler(async (req, res) => {
     if (member.yarBalance < amount) {
         return res.status(400).json({ success: false, message: "Insufficient YAR balance...!", error: "INSUFFICIENT_YAR_BALANCE" });
     }
-    const usdValue = amount * 0.5;
+    const yarRate = Number(YAR_RATE);
+    const usdValue = amount * yarRate;
     const session = await mongoose.startSession();
     session.startTransaction();
     try {

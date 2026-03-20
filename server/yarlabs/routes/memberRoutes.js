@@ -2,12 +2,13 @@ const express = require('express');
 const Router = express.Router();
 const { ethers } = require('ethers');
 
+const {SEPOLIA_RPC_URL, ADMIN_PRIVATE_KEY, YAR_CONTRACT_ADDRESS} = require('../utils/env');
 const asyncHandler = require('../utils/asyncHandler');
 const Member = require('../models/Member');
 
-const provider = new ethers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL);
-const wallet = new ethers.Wallet(process.env.ADMIN_PRIVATE_KEY, provider);
-const contractAddress = process.env.YAR_CONTRACT_ADDRESS;
+const provider = new ethers.JsonRpcProvider(SEPOLIA_RPC_URL);
+const wallet = new ethers.Wallet(ADMIN_PRIVATE_KEY, provider);
+const contractAddress = YAR_CONTRACT_ADDRESS;
 const abi = ["function balanceOf(address owner) view returns (uint256)"];
 const contract = new ethers.Contract(contractAddress, abi, wallet);
 

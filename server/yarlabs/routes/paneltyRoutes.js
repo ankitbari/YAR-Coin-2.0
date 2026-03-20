@@ -3,14 +3,15 @@ const Router = express.Router();
 const mongoose = require('mongoose');
 const { ethers } = require('ethers');
 
+const { SEPOLIA_RPC_URL, ADMIN_PRIVATE_KEY, YAR_CONTRACT_ADDRESS } = require('../utils/env');
 const asyncHandler = require('../utils/asyncHandler');
 const Member = require('../models/Member');
 const Admin = require('../models/Admin');
 const Panelty = require('../models/Panelty');
 
-const provider = new ethers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL);
-const wallet = new ethers.Wallet(process.env.ADMIN_PRIVATE_KEY, provider);
-const contractAddress = process.env.YAR_CONTRACT_ADDRESS;
+const provider = new ethers.JsonRpcProvider(SEPOLIA_RPC_URL);
+const wallet = new ethers.Wallet(ADMIN_PRIVATE_KEY, provider);
+const contractAddress = YAR_CONTRACT_ADDRESS;
 const abi = ["function transferFrom(address from, address to, uint256 value) public returns (bool)",
     "function allowance(address owner, address spender) view returns (uint256)",
     "function balanceOf(address owner) view returns (uint256)"];
