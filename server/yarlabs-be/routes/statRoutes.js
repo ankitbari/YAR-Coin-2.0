@@ -1,19 +1,13 @@
 const express = require("express");
+const Router = express.Router();
+
+const asyncHandler = require('../utils/asyncHandler');
 const { getRepoContributors } = require("../utils/githubService");
 
-const router = express.Router();
+Router.get("/repo/:owner/:repo", asyncHandler(async (req, res) => {
+  const { owner, repo } = req.params;
+  const contributors = await getRepoContributors(owner, repo);
+  res.json({ success: true, message: "Contributors fetched successfully...!", data: contributors });
+}));
 
-router.get("/repo/:owner/:repo", async (req, res) => {
-  try {
-    const { owner, repo } = req.params;
-
-    const contributors = await getRepoContributors(owner, repo);
-
-    res.json(contributors);
-
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching contributors" });
-  }
-});
-
-module.exports = router;
+module.exports = Router;

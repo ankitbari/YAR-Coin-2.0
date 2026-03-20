@@ -19,7 +19,7 @@ const Teacher = require('./models/Admin');
 const bids = require('./routes/biddingRoutes');
 const Bidding = require('./models/Bidding')
 const dexRoutes = require('./routes/dexRoutes');
-const statRoutes = require('./routes/statRoutes');
+const stats = require('./routes/statRoutes');
 const paneltyRoutes = require('./routes/paneltyRoutes');
 const nftRoutes = require('./routes/nftRoutes');
 
@@ -39,7 +39,7 @@ app.use('/api/v1/auth', login);
 app.use('/api/v1/members', members);
 app.use('/api/v1/admins', admins);
 app.use('/api/v1/bids', bids);
-app.use('/stat', statRoutes);
+app.use('/api/v1/stats', stats);
 app.use('/apply', paneltyRoutes);
 app.use('/mint', nftRoutes);
 app.use('/dex', dexRoutes);
