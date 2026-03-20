@@ -1,4 +1,4 @@
-const Student = require('../models/Student');
+const Member = require('../models/Member');
 const express = require('express');
 const Router = express.Router();
 const { ethers } = require('ethers');
@@ -19,8 +19,8 @@ const provider = new ethers.JsonRpcProvider(process.env.HARDHAT_RPC);
 
 Router.get('/', async (req, res) => {
     try {
-        const students = await Student.find();
-        res.status(200).json(students);
+        const members = await Member.find();
+        res.status(200).json(members);
     }
     catch (err) {
         res.status(400).json({ error: err.message });
@@ -30,14 +30,14 @@ Router.get('/', async (req, res) => {
 Router.post('/', async (req, res) => {
     try {
         if (currentAccountIndex >= hardhatAccounts.length) {
-            return res.status(400).json({ error: 'No more hardhat student accounts available.' });
+            return res.status(400).json({ error: 'No more hardhat member accounts available.' });
         }
         const walletAddress = hardhatAccounts[currentAccountIndex];
         req.body.walletAddress = walletAddress;
         currentAccountIndex++;
-        const student = new Student(req.body);
-        await student.save();
-        res.status(200).json(student);
+        const member = new Member(req.body);
+        await member.save();
+        res.status(200).json(member);
     }
     catch (err) {
         res.status(400).json({ error: err.message });

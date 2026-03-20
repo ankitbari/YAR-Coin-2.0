@@ -1,4 +1,4 @@
-const Student = require('../models/Member');
+const Member = require('../models/Member');
 const Message = require('../models/Message');
 
 const userCache = new Map();
@@ -8,11 +8,11 @@ async function getAdminId(userId, role) {
     if (userCache.has(userId)) {
         return userCache.get(userId);
     }
-    const student = await Student.findById(userId).lean();
-    if (!student || !student.ownedBy) return null;
-    userCache.set(userId, student.ownedBy);
+    const member = await Member.findById(userId).lean();
+    if (!member || !member.ownedBy) return null;
+    userCache.set(userId, member.ownedBy);
     setTimeout(() => userCache.delete(userId), 5 * 60 * 1000);
-    return student.ownedBy;
+    return member.ownedBy;
 }
 
 module.exports = (io) => {

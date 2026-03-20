@@ -1,4 +1,4 @@
-const Teacher = require('../models/Teacher');
+const Admin = require('../models/Admin');
 const express = require('express');
 const Router = express.Router();
 const { ethers } = require('ethers');
@@ -27,8 +27,8 @@ const tokenContract = new ethers.Contract(tokenAddress, tokenAbi, deployerWallet
 
 Router.get('/', async (req, res) => {
     try {
-        const teachers = await Teacher.find();
-        res.status(200).json(teachers);
+        const admins = await Admin.find();
+        res.status(200).json(admins);
     }
     catch (err) {
         res.status(400).json({ error: err.message });
@@ -38,7 +38,7 @@ Router.get('/', async (req, res) => {
 Router.post('/', async (req, res) => {
     try {
         if (currentAccountIndex >= 6) {
-            return res.status(400).json({ error: 'No more hardhat teacher accounts available.' });
+        return res.status(400).json({ error: 'No more hardhat admin accounts available.' });
         }
         const walletAddress = hardhatAccounts[currentAccountIndex];
         const amount = ethers.parseUnits("10000", 18);
@@ -47,9 +47,9 @@ Router.post('/', async (req, res) => {
         req.body.walletAddress = walletAddress;
         currentAccountIndex++;
 
-        const teacher = new Teacher(req.body);
-        await teacher.save();
-        res.status(200).json(teacher);
+        const admin = new Admin(req.body);
+        await admin.save();
+        res.status(200).json(admin);
     }
     catch (err) {
         res.status(400).json({ error: err.message });
