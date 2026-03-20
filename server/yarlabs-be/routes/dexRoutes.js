@@ -5,7 +5,7 @@ const { ethers } = require('ethers');
 
 const asyncHandler = require('../utils/asyncHandler');
 const DEX = require('../models/DEX');
-const Student = require('../models/Member');
+const Member = require('../models/Member');
 
 const provider = new ethers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL);
 
@@ -39,8 +39,8 @@ Router.post('/convert', asyncHandler(async (req, res) => {
     if (existingTx) {
         return res.status(409).json({ success: false, message: "Transaction already processed...!", error: "DUPLICATE_TRANSACTION" });
     }
-    const student = await Student.findOne({ walletAddress });
-    if (!student) {
+    const member = await Member.findOne({ walletAddress });
+    if (!member) {
         return res.status(404).json({ success: false, message: "Member not found...!", error: "MEMBER_NOT_FOUND" });
     }
     let receipt;
@@ -75,15 +75,15 @@ Router.post('/convert', asyncHandler(async (req, res) => {
     if (!validEvent) {
         return res.status(400).json({ success: false, message: "Invalid conversion event...!", error: "INVALID_CONVERSION_EVENT" });
     }
-    if (student.yarBalance < amount) {
+    if (member.yarBalance < amount) {
         return res.status(400).json({ success: false, message: "Insufficient YAR balance...!", error: "INSUFFICIENT_YAR_BALANCE" });
     }
     const usdValue = amount * 0.5;
     const session = await mongoose.startSession();
     session.startTransaction();
     try {
-        student.yarBalance -= amount;
-        await student.save({ session });
+        member.yarBalance -= amount;
+        await member.save({ session });
         const total = await DEX.aggregate([
             { $match: { walletAddress } },
             {
