@@ -36,6 +36,6 @@ GET    https://yarcoin.vercel.app/transactions/:walletAddress
 
 - Bidding API's
 ```bash
-POST   https://yarcoin.vercel.app/api/biddings
-GET    https://yarcoin.vercel.app/api/biddings/student/:studentId
+GET    https://yarcoin.vercel.app/api/v1/bids/member/:memberId
+POST   https://yarcoin.vercel.app/api/v1/bids/admin
 ```
