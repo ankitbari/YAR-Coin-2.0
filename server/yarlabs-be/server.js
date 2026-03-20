@@ -40,7 +40,7 @@ app.use('/api/v1/members', members);
 app.use('/api/v1/admins', admins);
 app.use('/api/v1/bids', bids);
 app.use('/api/v1/stats', stats);
-app.use('/apply', paneltyRoutes);
+app.use('/api/v1/apply', paneltyRoutes);
 app.use('/mint', nftRoutes);
 app.use('/dex', dexRoutes);
 
