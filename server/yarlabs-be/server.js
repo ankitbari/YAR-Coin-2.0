@@ -40,9 +40,9 @@ app.use('/apply', paneltyRoutes);
 app.use('/mint', nftRoutes);
 app.use('/dex', DEXRoutes);
 
-app.use((req, res) => {
-    res.status(404).json({ success: false, message: "Route invalid...!", error: "INVALID_ROUTE" });
-});
+// app.use((req, res) => {
+//     res.status(404).json({ success: false, message: "Route invalid...!", error: "INVALID_ROUTE" });
+// });
 
 mongoose.connect(MONGO_URI)
     .then(() => console.log('MongoDB connected...!'))
